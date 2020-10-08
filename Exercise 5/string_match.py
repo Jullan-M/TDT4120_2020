@@ -50,23 +50,17 @@ def build_tree(dna_sequences):
         node.count += 1
     return root
 
-def segment(dna):
-    dna_sequences = []
-
-    n = len(dna)
-    for step in range(1, n+1):
-        l = n + 1 - step
-        for i in range(0, l):
-            dna_sequences.append(dna[i:i+step])
-    return dna_sequences
-
 def string_match(dna, segments):
-    tree = build_tree(segment(dna))
-    
+    n = len(dna)
     count = 0
     for seg in segments:
-        count += search_tree(tree, seg)
+        step = len(seg)
+        l = n + 1 - step
+        for i in range(l):
+            if dna[i:i+step] == seg:
+                count += 1
     return count
+
         
 
 
@@ -91,6 +85,7 @@ def generate_match_tests():
 
     # Some small random rests
     for i in range(2000):
+        print(i)
         d = "".join(
             random.choices(["A", "G", "T", "C"], k=random.randint(0, 200))
         )
