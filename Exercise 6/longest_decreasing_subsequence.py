@@ -8,20 +8,21 @@ def longest_decreasing_subsequence(s):
     seq = []
     l = 1
 
-    for j in range(0,n):
+    max_val = 0
+    for j in range(1,n):
         k = n-1-j
         min_val = s[k]
         for i in range(k+1, n):
-            bonus = s[k] > s[i]
+            bonus = s[k] > s[i] and s[k] > max_val
 
             if lds[j] < lds[n-1-i] + bonus:
                 lds[j] = lds[n-1-i] + bonus
                 if bonus:
+                    max_val = s[k]
                     min_val = min(min_val, s[i])
-        
-        if min_val != s[k]:
-            l = j
-            seq.append(min_val)
+                    print(k, min_val)
+                    seq.append(min_val)
+    
     seq.append(max(s[:l+1]))
     print(lds, seq)
     return seq[::-1]
