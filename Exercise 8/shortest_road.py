@@ -17,7 +17,7 @@ dc = [0, 0, 1, -1]
 
 def shortest_road(build_map, start, end):
     n, k = len(build_map), len(build_map[0])
-    nq = queue.SimpleQueue()
+    nq = SimpleQueue()
     visited = [[False for _1 in range(k)] for _2 in range(n)]    
     
     def check_neighbors(node):
