@@ -4,10 +4,30 @@
 
 import random
 
+def building_time_aux(node, visited, tot_time):
+    visited[node.i] = True
+    q = node.time # Time it takes to finish current task
+    p = 0 # Recursive max time of neighbor nodes
+    for nbor in node.depends_on:
+        if not visited[nbor.i]:
+            p = max(p, building_time_aux(nbor, visited, tot_time))
+        else:
+            p = max(p, tot_time[nbor.i])
+    tot_time[node.i] = q + p
+    return q + p
 
 def building_time(tasks):
-    # Skriv din kode her
-    pass
+    V = len(tasks)
+    visited = [False] * V
+    tot_time = [0] * V
+    
+    q = -1
+    for node in tasks:
+        if not visited[node.i]:
+            q = max(q, building_time_aux(node, visited, tot_time))
+    return q
+
+
 
 
 class Task:
