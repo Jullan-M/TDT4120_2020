@@ -24,16 +24,19 @@ def dijkstra(mat, timetable, start):
     mat[start].d = 0
     
     node_heap = [mat[start]]
+    done = set()
     heapify(node_heap)
 
     while node_heap:
         u = heappop(node_heap)
+        done.add(u)
         for v, t1, t2 in u.adj:
             # Relax
             if v.d > t2 and u.d <= t1:
                 v.d = t2
                 v.parent = u
-                heappush(node_heap, v)
+                if not (v in done):
+                    heappush(node_heap, v)
 
 def earliest_arrival(timetable, start, goal):
     mat = {}
