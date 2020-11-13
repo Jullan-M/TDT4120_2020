@@ -1,29 +1,33 @@
 def schulze_method(A):
     n = len(A)
-    path = [[None]*n for _ in range(n)]
+    path = [[0]*n for _ in range(n)]
     for i in range(n):
         for j in range(1+i,n):
             if A[i][j] > A[j][i]:
                 path[i][j] = A[i][j]
                 path[j][i] = 0
-            else:
+            elif A[i][j] < A[j][i]:
                 path[j][i] = A[j][i]
                 path[i][j] = 0
     
+    for k in range(0, n):
+        for i in range(0,n):
+            if k != i:
+                for j in range(0, n):
+                    if k != j and i != j:
+                        path[i][j] = max(path[i][j], min(path[i][k], path[k][j]))
+
+    res = [0] * n # Ordering of candidates [0,...,n-1]
+    pos = [n-1] * n # Position of every candidate in res
     for i in range(0, n):
-        for j in range(0,n):
-            if i != j:
-                for k in range(0, n):
-                    if i != k and j != k:
-                        path[j][k] = max(path[j][k], min(path[j][i], path[i][k]))
-    
-    res = [0] * n
-    for i in range(0, n):
-        count = 0
-        for j in range(0, n):
-            if i != j and path[i][j] > path[j][i]:
-                count += 1
-        res[n-1 - count] = i
+        for j in range(1+i, n):
+            # If candidate i is preferred over j or if i and j have equal amount of preferation
+            # then i comes before j.
+            if path[i][j] >= path[j][i]: 
+                pos[i] -= 1
+            else:
+                pos[j] -= 1
+        res[pos[i]] = i
     return res
 
 
